@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /bin/bash
 
 # 20170913
 # Kristin Rutkowski
@@ -12,10 +12,8 @@
 #
 
 
-
-#INSTALL_DIR=x86_64-unknown-linux-gnu-libc2.17
-# use an asterisk later to get any dirs, no matter the version
 INSTALL_DIR=x86_64
+INSTALL_DIR=x86_64-apple-darwin18.7.0
 dirsArray=($(find . -maxdepth 1 -type d))
 origDir=$(pwd)
 
@@ -28,10 +26,6 @@ if [[ $origDir != *"heasoft"* ]]; then
   exit 0
 fi
 
-# uncomment two lines for testing:
-#INSTALL_DIR="installin"
-#mkdir -p tmpdir/{installing,trunk/installing/{includes,docs},tags/mytags}
-
 # get length of an array
 numDirs=${#dirsArray[@]}
 
@@ -39,16 +33,20 @@ numDirs=${#dirsArray[@]}
 for (( i=0; i<${numDirs}; i++ ));
 do
   dirToDelete=$origDir/${dirsArray[$i]}/$INSTALL_DIR
-  #echo "  curr loop = ${dirsArray[$i]}"
+  echo "  curr loop = ${dirsArray[$i]}"
   echo "  dirToDelete = $dirToDelete"
-  if [ -d "$dirToDelete"* ]; then
+  if [ -d "$dirToDelete"* ] ; then
+    echo "removing $dirToDelete*"
+    rm -rf "$dirToDelete"*
+  fi
+  dirToDelete=$origDir/${dirsArray[$i]}/BLD/$INSTALL_DIR
+  if [ -d "$dirToDelete"* ] ; then
     echo "removing $dirToDelete*"
     rm -rf "$dirToDelete"*
   fi
 done
 
 
-exit 0
 
 
 
